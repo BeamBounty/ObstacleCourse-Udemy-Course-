@@ -30,10 +30,14 @@ void AMovingPlatform::Tick(float DeltaTime)
 	CurrentLocation += (PlatformVelocity * DeltaTime); //Add Vector to that Location (Multiply by DeltaTime to make frame rate indepedent)
 	SetActorLocation(CurrentLocation); // Set Location
 	
-	DistFromStart = FVector::Dist(StartLocation, CurrentLocation); //Every Frame, check how far platform has moved
-
-	// Return platform if out of bounds (CHECKLIST OF STUFF TO DO)
-		// Check how far platform has moved
-		// Reverse direction when it hits bound(s)
+	float DistanceMoved = FVector::Dist(StartLocation, CurrentLocation); //Every Frame, check how far platform has moved
+	 
+	if (DistanceMoved > DistMoved)
+	{
+		FVector MoveDirection = PlatformVelocity.GetSafeNormal();
+		StartLocation += (MoveDirection * DistMoved);
+		PlatformVelocity = -PlatformVelocity;
+	}
+	
 }
 
